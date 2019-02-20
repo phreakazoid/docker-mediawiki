@@ -95,7 +95,7 @@ if (getenv('MEDIAWIKI_DB_TYPE') == 'sqlite') {
     ];
 }
 
-$wgMainCacheType = CACHE_ACCEL;
+$wgMainCacheType = CACHE_NONE;
 $wgMemCachedServers = [];
 
 $wgUploadPath = '/images';
@@ -147,6 +147,8 @@ if (getenv('MEDIAWIKI_LANGUAGE_CODE') != '') {
     $wgLanguageCode = getenv('MEDIAWIKI_LANGUAGE_CODE');
 }
 
+$wgPingback = false;
+
 if (getenv('MEDIAWIKI_SECRET_KEY') != '') {
     $wgSecretKey = getenv('MEDIAWIKI_SECRET_KEY');
 }
@@ -162,9 +164,12 @@ if (getenv('MEDIAWIKI_DEFAULT_SKIN') != '') {
     $wgDefaultSkin = getenv('MEDIAWIKI_DEFAULT_SKIN');
 }
 
+# The following permissions were set based on your choice in the installer
+$wgGroupPermissions['*']['createaccount'] = false;
+$wgGroupPermissions['*']['edit'] = false;
+$wgGroupPermissions['*']['read'] = false;
+
 # Enabled skins
-wfLoadSkin( 'CologneBlue' );
-wfLoadSkin( 'Modern' );
 wfLoadSkin( 'MonoBook' );
 wfLoadSkin( 'Vector' );
 
@@ -212,6 +217,9 @@ if (getenv('MEDIAWIKI_EXTENSION_USER_MERGE_ENABLED') == ''
     $wgGroupPermissions['sysop']['usermerge'] = true;
     $wgUserMergeProtectedGroups = array();
 }
+
+$wgJobRunRate = 10;
+$wgRunJobsAsync = true;
 
 # Load extra settings
 require 'ExtraLocalSettings.php';
