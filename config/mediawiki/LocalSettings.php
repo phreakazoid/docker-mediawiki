@@ -218,8 +218,7 @@ if (getenv('MEDIAWIKI_EXTENSION_USER_MERGE_ENABLED') == ''
     $wgUserMergeProtectedGroups = array();
 }
 
-$wgJobRunRate = 10;
-$wgRunJobsAsync = true;
+$wgJobRunRate = 1;
 
 # Load extra settings
 require 'ExtraLocalSettings.php';
