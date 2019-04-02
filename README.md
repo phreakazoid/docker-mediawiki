@@ -1,7 +1,5 @@
 # Docker MediaWiki
 
-[![DockerHub Pulls](https://img.shields.io/docker/pulls/kristophjunge/mediawiki.svg)](https://hub.docker.com/r/kristophjunge/mediawiki/) [![DockerHub Stars](https://img.shields.io/docker/stars/kristophjunge/mediawiki.svg)](https://hub.docker.com/r/kristophjunge/mediawiki/) [![GitHub Stars](https://img.shields.io/github/stars/kristophjunge/docker-mediawiki.svg?label=github%20stars)](https://github.com/kristophjunge/docker-mediawiki) [![GitHub Forks](https://img.shields.io/github/forks/kristophjunge/docker-mediawiki.svg?label=github%20forks)](https://github.com/kristophjunge/docker-mediawiki) [![GitHub License](https://img.shields.io/github/license/kristophjunge/docker-mediawiki.svg)](https://github.com/kristophjunge/docker-mediawiki)
-
 [![MediaWiki](https://raw.githubusercontent.com/kristophjunge/docker-mediawiki/master/mediawiki.png)](https://www.mediawiki.org)
 
 Docker container for [MediaWiki](https://www.mediawiki.org) running under [Nginx](https://www.nginx.com) and [PHP-FPM](https://php-fpm.org/). Based on the official PHP7 [images](https://hub.docker.com/_/php/).
