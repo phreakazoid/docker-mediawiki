@@ -1,6 +1,6 @@
 # Docker MediaWiki
 
-[![MediaWiki](https://raw.githubusercontent.com/kristophjunge/docker-mediawiki/master/mediawiki.png)](https://www.mediawiki.org)
+[![MediaWiki](https://raw.githubusercontent.com/phreakazoid/mediawiki/master/mediawiki.png)](https://www.mediawiki.org)
 
 Docker container for [MediaWiki](https://www.mediawiki.org) running under [Nginx](https://www.nginx.com) and [PHP-FPM](https://php-fpm.org/). Based on the official PHP7 [images](https://hub.docker.com/_/php/).
 
@@ -33,18 +33,9 @@ For a basic understanding of docker please refer to the official [documentation]
    * [Contributing](#contributing)
    * [License](#license)
 
-
-## Supported Tags
-
-- `1.30` [(Dockerfile)](https://github.com/kristophjunge/docker-mediawiki/blob/1.30/Dockerfile)
-- `1.29` [(Dockerfile)](https://github.com/kristophjunge/docker-mediawiki/blob/1.29/Dockerfile)
-- `1.28` [(Dockerfile)](https://github.com/kristophjunge/docker-mediawiki/blob/1.28/Dockerfile)
-- `1.27` [(Dockerfile)](https://github.com/kristophjunge/docker-mediawiki/blob/1.27/Dockerfile)
-
-
 ## Features
 
-- [MediaWiki](https://www.mediawiki.org) 1.30.0
+- [MediaWiki](https://www.mediawiki.org)
 - [Nginx](https://www.nginx.com)
 - [PHP-FPM](https://php-fpm.org/) with [PHP7](https://www.mediawiki.org/wiki/Compatibility/de#PHP)
 - [VisualEditor](https://www.mediawiki.org/wiki/VisualEditor) plugin
@@ -55,18 +46,11 @@ For a basic understanding of docker please refer to the official [documentation]
 - APC as in memory PHP object cache
 - Configured with [Short URLs](https://www.mediawiki.org/wiki/Manual:Short_URL)
 
-
-## Changelog
-
-See [CHANGELOG.md](https://github.com/kristophjunge/docker-mediawiki/blob/master/docs/CHANGELOG.md) for information about the latest changes.
-
-Please note that version 1.30 has some breaking changes.
-
 ## Usage
 
 ### With MySQL
 
-See Docker Compose [example](https://github.com/kristophjunge/docker-mediawiki/blob/master/example/docker-compose/mysql/docker-compose.yml).
+See Docker Compose [example](https://github.com/phreakazoid/mediawiki/blob/master/example/docker-compose/mysql/docker-compose.yml).
 
 Start a MySQL container.
 
@@ -97,7 +81,7 @@ docker run --name mediawiki_wiki \
 -e MEDIAWIKI_DB_PASSWORD=mysecret \
 -e MEDIAWIKI_ENABLE_UPLOADS=1 \
 -v /var/mediawiki/images:/images \
--d kristophjunge/mediawiki
+-d phreakazoid/mediawiki
 ```
 
 Create a new database with the install script. Insert username and password for your admin account.
@@ -129,7 +113,7 @@ You should be able to browse your wiki at [http://localhost:8080](http://localho
 
 ### With SQLite
 
-See Docker Compose [example](https://github.com/kristophjunge/docker-mediawiki/blob/master/example/docker-compose/sqlite/docker-compose.yml).
+See Docker Compose [example](https://github.com/phreakazoid/mediawiki/blob/master/example/docker-compose/sqlite/docker-compose.yml).
 
 Start MediaWiki container.
 
@@ -144,7 +128,7 @@ docker run --name=mediawiki_wiki \
 -e MEDIAWIKI_ENABLE_UPLOADS=1 \
 -v /var/mediawiki/images:/images \
 -v /var/mediawiki/data:/data \
--d kristophjunge/mediawiki
+-d phreakazoid/mediawiki
 ```
 
 Create a new database with the install script. Insert username and password for your admin account.
@@ -411,13 +395,6 @@ COPY ./LocalSettings.php /var/www/mediawiki/LocalSettings.php
 * The MediaWiki files are owned by `root`. Only the `images` folder is owned by `www-data`.
 * The Parsoid files are all owned by `root`.
 * During container build signatures and keys of installed software is verified where possible.
-
-
-## Contributing
-
-See [CONTRIBUTING.md](https://github.com/kristophjunge/docker-mediawiki/blob/master/docs/CONTRIBUTING.md) for information on how to contribute to the project.
-
-See [CONTRIBUTORS.md](https://github.com/kristophjunge/docker-mediawiki/blob/master/docs/CONTRIBUTORS.md) for the list of contributors.
 
 
 ## License
