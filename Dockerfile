@@ -89,7 +89,7 @@ RUN curl -s -o /tmp/keys.txt https://www.mediawiki.org/keys/keys.txt && \
     mv /tmp/mediawiki-$MEDIAWIKI_VERSION_MAJOR.$MEDIAWIKI_VERSION_MINOR.$MEDIAWIKI_VERSION_BUGFIX/* /var/www/mediawiki/w && \
     rm -rf /tmp/mediawiki.tar.gz /tmp/mediawiki-$MEDIAWIKI_VERSION_MAJOR.$MEDIAWIKI_VERSION_MINOR.$MEDIAWIKI_VERSION_BUGFIX/ /tmp/keys.txt && \
     rm -rf /var/www/mediawiki/w/images && \
-    ln -s /images /var/www/mediawiki/images && \
+    ln -s /images /var/www/mediawiki/w/images && \
     chown -R www-data:www-data /data /images /var/www/mediawiki/w/images
 COPY config/mediawiki/* /var/www/mediawiki/w/
 
