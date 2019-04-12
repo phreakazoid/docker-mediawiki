@@ -84,27 +84,27 @@ RUN curl -s -o /tmp/keys.txt https://www.mediawiki.org/keys/keys.txt && \
     gpg --import /tmp/keys.txt && \
     gpg --list-keys --fingerprint --with-colons | sed -E -n -e 's/^fpr:::::::::([0-9A-F]+):$/\1:6:/p' | gpg --import-ownertrust && \
     gpg --verify /tmp/mediawiki.tar.gz.sig /tmp/mediawiki.tar.gz && \
-    mkdir -p /var/www/mediawiki /data /images && \
+    mkdir -p /var/www/mediawiki/w /data /images && \
     tar -xzf /tmp/mediawiki.tar.gz -C /tmp && \
-    mv /tmp/mediawiki-$MEDIAWIKI_VERSION_MAJOR.$MEDIAWIKI_VERSION_MINOR.$MEDIAWIKI_VERSION_BUGFIX/* /var/www/mediawiki && \
+    mv /tmp/mediawiki-$MEDIAWIKI_VERSION_MAJOR.$MEDIAWIKI_VERSION_MINOR.$MEDIAWIKI_VERSION_BUGFIX/* /var/www/mediawiki/w && \
     rm -rf /tmp/mediawiki.tar.gz /tmp/mediawiki-$MEDIAWIKI_VERSION_MAJOR.$MEDIAWIKI_VERSION_MINOR.$MEDIAWIKI_VERSION_BUGFIX/ /tmp/keys.txt && \
-    rm -rf /var/www/mediawiki/images && \
+    rm -rf /var/www/mediawiki/w/images && \
     ln -s /images /var/www/mediawiki/images && \
-    chown -R www-data:www-data /data /images /var/www/mediawiki/images
-COPY config/mediawiki/* /var/www/mediawiki/
+    chown -R www-data:www-data /data /images /var/www/mediawiki/w/images
+COPY config/mediawiki/* /var/www/mediawiki/w/
 
 # VisualEditor extension
 RUN curl -s -o /tmp/extension-visualeditor.tar.gz https://extdist.wmflabs.org/dist/extensions/VisualEditor-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-`curl -s https://extdist.wmflabs.org/dist/extensions/ | grep -o -P "(?<=VisualEditor-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-)[0-9a-z]{7}(?=.tar.gz)" | head -1`.tar.gz && \
-    tar -xzf /tmp/extension-visualeditor.tar.gz -C /var/www/mediawiki/extensions && \
+    tar -xzf /tmp/extension-visualeditor.tar.gz -C /var/www/mediawiki/w/extensions && \
     rm /tmp/extension-visualeditor.tar.gz
 
 # User merge and delete extension
 RUN curl -s -o /tmp/extension-usermerge.tar.gz https://extdist.wmflabs.org/dist/extensions/UserMerge-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-`curl -s https://extdist.wmflabs.org/dist/extensions/ | grep -o -P "(?<=UserMerge-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-)[0-9a-z]{7}(?=.tar.gz)" | head -1`.tar.gz && \
-    tar -xzf /tmp/extension-usermerge.tar.gz -C /var/www/mediawiki/extensions && \
+    tar -xzf /tmp/extension-usermerge.tar.gz -C /var/www/mediawiki/w/extensions && \
     rm /tmp/extension-usermerge.tar.gz
 
 # Set work dir
-WORKDIR /var/www/mediawiki
+WORKDIR /var/www/mediawiki/w
 
 # Copy docker entry point script
 COPY docker-entrypoint.sh /docker-entrypoint.sh
