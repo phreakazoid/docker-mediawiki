@@ -1,4 +1,4 @@
-# Docker MediaWiki
+# Docker MediaWiki with NGINX
 
 [![MediaWiki](https://raw.githubusercontent.com/phreakazoid/mediawiki/master/mediawiki.png)](https://www.mediawiki.org)
 
