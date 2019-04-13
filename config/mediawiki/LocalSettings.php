@@ -98,7 +98,7 @@ if (getenv('MEDIAWIKI_DB_TYPE') == 'sqlite') {
 $wgMainCacheType = CACHE_ACCEL;
 $wgMemCachedServers = [];
 
-$wgUploadPath = '/images';
+$wgUploadPath = '/w/images';
 $wgUploadDirectory = '/images';
 $wgUploadSizeWarning = false;
 
