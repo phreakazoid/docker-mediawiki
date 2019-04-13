@@ -16,8 +16,8 @@ if (getenv('MEDIAWIKI_META_NAMESPACE') != '') {
 }
 
 # Short URLs
-$wgScriptPath = "";
-$wgArticlePath = "/$1";
+$wgScriptPath = "/w";
+$wgArticlePath = "/wiki/$1";
 $wgUsePathInfo = true;
 $wgScriptExtension = ".php";
 
