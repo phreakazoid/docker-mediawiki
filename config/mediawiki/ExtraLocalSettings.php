@@ -15,6 +15,10 @@ $wgUseInstantCommons = false;
 
 $wgAuthenticationTokenVersion = "1";
 
+$wgGenerateThumbnailOnParse = false;
+// $wgLocalFileRepo['transformVia404'] = true;
+$wgThumbnailScriptPath = "{$wgScriptPath}/thumb.php";
+
 $wgGroupPermissions['*']['createaccount'] = false;
 $wgGroupPermissions['*']['edit'] = false;
 $wgGroupPermissions['*']['read'] = false;
