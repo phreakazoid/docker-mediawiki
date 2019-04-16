@@ -10,8 +10,8 @@ RUN apt-get update && \
     apt-get -y install apt-transport-https ca-certificates git curl --no-install-recommends && \
     rm -r /var/lib/apt/lists/*
 
-# MySQL PHP extension
-RUN docker-php-ext-install mysqli
+# MySQL + LDAP PHP extension
+RUN docker-php-ext-install mysqli ldap
 
 # Pear mail
 RUN curl -s -o /tmp/go-pear.phar http://pear.php.net/go-pear.phar && \
