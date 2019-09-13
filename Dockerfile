@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y imagemagick libmagickwand-dev --no-inst
 # Intl PHP extension
 RUN apt-get update && apt-get install -y libicu-dev g++ --no-install-recommends && \
     docker-php-ext-install intl && \
-    apt-get install -y --auto-remove libicu57 g++ && \
+    apt-get install -y --auto-remove g++ && \
     rm -rf /var/lib/apt/lists/*
 
 # APC PHP extension
@@ -66,7 +66,7 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
 
 # Parsoid
 RUN useradd parsoid --no-create-home --home-dir /usr/lib/parsoid --shell /usr/sbin/nologin
-RUN apt-key advanced --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 90E9F83F22250DD7 && \
+RUN apt-key advanced --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys AF380A3036A03444 && \
     echo "deb https://releases.wikimedia.org/debian jessie-mediawiki main" > /etc/apt/sources.list.d/parsoid.list && \
     apt-get update && \
     apt-get -y install parsoid --no-install-recommends
@@ -76,7 +76,7 @@ ENV NODE_PATH /usr/lib/parsoid/node_modules:/usr/lib/parsoid/src
 # MediaWiki
 ARG MEDIAWIKI_VERSION_MAJOR=1
 ARG MEDIAWIKI_VERSION_MINOR=33
-ARG MEDIAWIKI_VERSION_BUGFIX=0-rc.0
+ARG MEDIAWIKI_VERSION_BUGFIX=0
 
 RUN curl -s -o /tmp/keys.txt https://www.mediawiki.org/keys/keys.txt && \
     curl -s -o /tmp/mediawiki.tar.gz https://releases.wikimedia.org/mediawiki/$MEDIAWIKI_VERSION_MAJOR.$MEDIAWIKI_VERSION_MINOR/mediawiki-$MEDIAWIKI_VERSION_MAJOR.$MEDIAWIKI_VERSION_MINOR.$MEDIAWIKI_VERSION_BUGFIX.tar.gz && \
