@@ -1,4 +1,4 @@
-FROM php:7-fpm
+FROM php:fpm
 MAINTAINER Patrick Eichmann <phreakazoid@phreakazoid.com>
 
 # Change UID and GID of www-data user to match host privileges
@@ -75,7 +75,7 @@ ENV NODE_PATH /usr/lib/parsoid/node_modules:/usr/lib/parsoid/src
 
 # MediaWiki
 ARG MEDIAWIKI_VERSION_MAJOR=1
-ARG MEDIAWIKI_VERSION_MINOR=33
+ARG MEDIAWIKI_VERSION_MINOR=34
 ARG MEDIAWIKI_VERSION_BUGFIX=0
 
 RUN curl -s -o /tmp/keys.txt https://www.mediawiki.org/keys/keys.txt && \
