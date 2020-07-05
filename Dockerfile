@@ -77,6 +77,7 @@ ENV NODE_PATH /usr/lib/parsoid/node_modules:/usr/lib/parsoid/src
 ARG MEDIAWIKI_VERSION_MAJOR=1
 ARG MEDIAWIKI_VERSION_MINOR=34
 ARG MEDIAWIKI_VERSION_BUGFIX=2
+ARG MEDIAWIKI_INSTALL_PATH=/var/www/mediawiki/w
 
 RUN curl -s -o /tmp/keys.txt https://www.mediawiki.org/keys/keys.txt && \
     curl -s -o /tmp/mediawiki.tar.gz https://releases.wikimedia.org/mediawiki/$MEDIAWIKI_VERSION_MAJOR.$MEDIAWIKI_VERSION_MINOR/mediawiki-$MEDIAWIKI_VERSION_MAJOR.$MEDIAWIKI_VERSION_MINOR.$MEDIAWIKI_VERSION_BUGFIX.tar.gz && \
@@ -84,27 +85,27 @@ RUN curl -s -o /tmp/keys.txt https://www.mediawiki.org/keys/keys.txt && \
     gpg --import /tmp/keys.txt && \
     gpg --list-keys --fingerprint --with-colons | sed -E -n -e 's/^fpr:::::::::([0-9A-F]+):$/\1:6:/p' | gpg --import-ownertrust && \
     gpg --verify /tmp/mediawiki.tar.gz.sig /tmp/mediawiki.tar.gz && \
-    mkdir -p /var/www/mediawiki/w /data /images && \
+    mkdir -p $MEDIAWIKI_INSTALL_PATH /data /images && \
     tar -xzf /tmp/mediawiki.tar.gz -C /tmp && \
-    mv /tmp/mediawiki-$MEDIAWIKI_VERSION_MAJOR.$MEDIAWIKI_VERSION_MINOR.$MEDIAWIKI_VERSION_BUGFIX/* /var/www/mediawiki/w && \
+    mv /tmp/mediawiki-$MEDIAWIKI_VERSION_MAJOR.$MEDIAWIKI_VERSION_MINOR.$MEDIAWIKI_VERSION_BUGFIX/* $MEDIAWIKI_INSTALL_PATH && \
     rm -rf /tmp/mediawiki.tar.gz /tmp/mediawiki-$MEDIAWIKI_VERSION_MAJOR.$MEDIAWIKI_VERSION_MINOR.$MEDIAWIKI_VERSION_BUGFIX/ /tmp/keys.txt && \
-    rm -rf /var/www/mediawiki/w/images && \
-    ln -s /images /var/www/mediawiki/w/images && \
-    chown -R www-data:www-data /data /images /var/www/mediawiki/w/images
-COPY config/mediawiki/* /var/www/mediawiki/w/
+    rm -rf $MEDIAWIKI_INSTALL_PATH/images && \
+    ln -s /images $MEDIAWIKI_INSTALL_PATH/images && \
+    chown -R www-data:www-data /data /images $MEDIAWIKI_INSTALL_PATH/images
+COPY config/mediawiki/* $MEDIAWIKI_INSTALL_PATH/
 
 # VisualEditor extension
 RUN curl -s -o /tmp/extension-visualeditor.tar.gz https://extdist.wmflabs.org/dist/extensions/VisualEditor-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-`curl -s https://extdist.wmflabs.org/dist/extensions/ | grep -o -P "(?<=VisualEditor-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-)[0-9a-z]{7}(?=.tar.gz)" | head -1`.tar.gz && \
-    tar -xzf /tmp/extension-visualeditor.tar.gz -C /var/www/mediawiki/w/extensions && \
+    tar -xzf /tmp/extension-visualeditor.tar.gz -C $MEDIAWIKI_INSTALL_PATH/extensions && \
     rm /tmp/extension-visualeditor.tar.gz
 
 # User merge and delete extension
 RUN curl -s -o /tmp/extension-usermerge.tar.gz https://extdist.wmflabs.org/dist/extensions/UserMerge-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-`curl -s https://extdist.wmflabs.org/dist/extensions/ | grep -o -P "(?<=UserMerge-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-)[0-9a-z]{7}(?=.tar.gz)" | head -1`.tar.gz && \
-    tar -xzf /tmp/extension-usermerge.tar.gz -C /var/www/mediawiki/w/extensions && \
+    tar -xzf /tmp/extension-usermerge.tar.gz -C $MEDIAWIKI_INSTALL_PATH/extensions && \
     rm /tmp/extension-usermerge.tar.gz
 
 # Set work dir
-WORKDIR /var/www/mediawiki/w
+WORKDIR $MEDIAWIKI_INSTALL_PATH
 
 # Copy docker entry point script
 COPY docker-entrypoint.sh /docker-entrypoint.sh
