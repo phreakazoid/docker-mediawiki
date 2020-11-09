@@ -6,50 +6,37 @@ RUN usermod -u 999 www-data && \
     groupmod -g 999 www-data
 
 # Utilities
-RUN set -eux; \
-    \
-    apt-get update; \ 
-    apt-get install -y --no-install-recommends \
-    git curl librsvg2-bin imagemagick python3 apt-transport-https ca-certificates unzip \
-    libicu-dev g++; \
+RUN apt-get update && \
+    apt-get -y install apt-transport-https ca-certificates git curl --no-install-recommends && \
     rm -r /var/lib/apt/lists/*
-
-# Install the PHP extentions we need
-RUN set -eux; \
-    \
-    savedAptMark="$(apt-mark showmanual)"; \
-    \
-    apt-get update; \
-    apt-get install -y --no-install-recommends libicu-dev; \
-    docker-php-ext-install -j $(nproc) intl mbstring mysqli opcache; \
-    pecl install APCu-5.1.18; \
-    docker-php-ext-enable apcu; \
-    \
-    apt-mark auto '.*' > /dev/null; \
-    apt-mark manual $savedAptMark; \
-    ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
-        | awk '/=>/ { print $3 }' \
-        | sort -u \
-        | xargs -r dpkg-query -S \
-        | cut -d: -f1 \
-        | sort -u \
-        | xargs -rt apt-mark manual; \
-    \
-    apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-    rm -rf /var/lib/apt/lists/*
-
-# set recommended PHP.ini settings
-# see https://secure.php.net/manual/en/opcache.installation.php
-RUN { \
-		echo 'opcache.memory_consumption=128'; \
-		echo 'opcache.interned_strings_buffer=8'; \
-		echo 'opcache.max_accelerated_files=4000'; \
-		echo 'opcache.revalidate_freq=60'; \
-		echo 'opcache.fast_shutdown=1'; \
-	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
 # MySQL PHP extension
 RUN docker-php-ext-install mysqli
+
+# Pear mail
+RUN curl -s -o /tmp/go-pear.phar http://pear.php.net/go-pear.phar && \
+    echo '/usr/bin/php /tmp/go-pear.phar "$@"' > /usr/bin/pear && \
+    chmod +x /usr/bin/pear && \
+    pear install mail Net_SMTP
+
+# Imagick with PHP extension
+RUN apt-get update && apt-get install -y imagemagick libmagickwand-dev --no-install-recommends && \
+    ln -s /usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/MagickWand-config /usr/bin/ && \
+    pecl install imagick-3.4.4 && \
+    echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini && \
+    rm -rf /var/lib/apt/lists/*
+
+# Intl PHP extension
+RUN apt-get update && apt-get install -y libicu-dev g++ --no-install-recommends && \
+    docker-php-ext-install intl && \
+    apt-get install -y --auto-remove g++ && \
+    rm -rf /var/lib/apt/lists/*
+
+# APC PHP extension
+RUN pecl install apcu && \
+    pecl install apcu_bc-1.0.5 && \
+    docker-php-ext-enable apcu --ini-name 10-docker-php-ext-apcu.ini && \
+    docker-php-ext-enable apc --ini-name 20-docker-php-ext-apc.ini
 
 # Nginx
 RUN apt-get update && \
