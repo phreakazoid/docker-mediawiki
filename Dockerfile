@@ -104,19 +104,6 @@ RUN curl -s -o /tmp/extension-usermerge.tar.gz https://extdist.wmflabs.org/dist/
     tar -xzf /tmp/extension-usermerge.tar.gz -C $MEDIAWIKI_INSTALL_PATH/extensions && \
     rm /tmp/extension-usermerge.tar.gz
 
-# mathoid
-RUN useradd --home=/var/lib/mathoid -M --user-group --system --shell=/usr/sbin/nologin -c "Mathoid for MediaWiki" mathoid; \
-    apt update && apt install -y librsvg2-dev python-cairosvg; \
-    git clone https://github.com/wikimedia/mathoid/ /usr/lib/mathoid && \
-    cd /usr/lib/mathoid &&  npm install; \
-    mkdir -p /var/log/mathoid && chown -R mathoid:mathoid /var/log/mathoid
-COPY config/mathoid/config.yaml /usr/lib/mathoid/config.yaml
-
-# math extension
-RUN curl -s -o /tmp/Math.tar.gz https://extdist.wmflabs.org/dist/extensions/Math-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-`curl -s https://extdist.wmflabs.org/dist/extensions/ | grep -o -P "(?<=Math-REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR}-)[0-9a-z]{7}(?=.tar.gz)" | head -1`.tar.gz && \
-    tar -xzf /tmp/Math.tar.gz -C /var/www/mediawiki/extensions && \
-    rm /tmp/Math.tar.gz
-
 # video play
 RUN git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/Widgets.git /var/www/mediawiki/extensions/Widgets/; \
     apt install -y ffmpeg; \
