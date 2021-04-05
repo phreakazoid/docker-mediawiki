@@ -76,7 +76,7 @@ ENV NODE_PATH /usr/lib/parsoid/node_modules:/usr/lib/parsoid/src
 # MediaWiki
 ARG MEDIAWIKI_VERSION_MAJOR=1
 ARG MEDIAWIKI_VERSION_MINOR=35
-ARG MEDIAWIKI_VERSION_BUGFIX=0
+ARG MEDIAWIKI_VERSION_BUGFIX=1
 ARG MEDIAWIKI_INSTALL_PATH=/var/www/mediawiki/w
 
 RUN curl -s -o /tmp/keys.txt https://www.mediawiki.org/keys/keys.txt && \
